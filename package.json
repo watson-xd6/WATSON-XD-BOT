@@ -1,0 +1,55 @@
+{
+  "name": "watson-xd-bot",
+  "version": "1.0.0",
+  "description": "Lightweight WhatsApp Multi-Device bot built with Baileys.",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib",
+    "plugins": "plugins"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "start": "node index.js",
+    "prettier": "prettier --write ."
+  },
+  "author": "watson-xd-2",
+  "homepage": "https://github.com/watson-xd-2/WATSON-XD-BOT#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/watson-xd-2/WATSON-XD-BOT.git"
+  },
+  "bugs": {
+    "url": "https://github.com/watson-xd-2/WATSON-XD-BOT/issues"
+  },
+  "keywords": [
+    "termux-whatsapp-bot",
+    "whatsapp-bot",
+    "whatsapp",
+    "js-whatsapp",
+    "whatsapp",
+    "Games-wabot",
+    "wabot-aq",
+    "multi-device",
+    "MD",
+    "baileys-md"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "awesome-phonenumber": "^2.68.0",
+    "axios": "^1.4.0",
+    "baileys": "latest",
+    "chalk": "^5.0.0",
+    "cheerio": "^1.1.2",
+    "file-type": "^17.1.1",
+    "fluent-ffmpeg": "^2.1.3",
+    "lowdb": "^3.0.0",
+    "moment-timezone": "^0.5.33",
+    "node-webpmux": "^3.2.1",
+    "node-fetch": "^2.6.1",
+    "syntax-error": "^1.4.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
