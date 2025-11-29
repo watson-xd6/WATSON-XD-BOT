@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Chat Bot</title>
+<style>
+  /* Floating chat button */
+  #chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  }
+  #chat-button:hover {
+    transform: scale(1.1);
+  }
+
+  /* Chat window */
+  #chat-window {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 320px;
+    max-height: 450px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  #chat-header {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+  }
+
+  #chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scroll-behavior: smooth;
+  }
+
+  .message-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .message {
+    padding: 10px 14px;
+    border-radius: 20px;
+    max-width: 75%;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s;
+  }
+
+  .user-msg {
+    background: #e0e0e0;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+  }
+
+  .bot-msg {
+    background: #007bff;
+    color: white;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  #chat-input {
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+
+  #chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+
+  #chat-input button {
+    padding: 10px 15px;
+    background: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #chat-input button:hover {
+    background: #0056b3;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+</head>
+<body>
+
+<!-- Chat button -->
+<button id="chat-button">💬</button>
+
+<!-- Chat window -->
+<div id="chat-window">
+  <div id="chat-header">Chat Bot</div>
+  <div id="chat-messages"></div>
+  <div id="chat-input">
+    <input type="text" id="user-input" placeholder="Type a message...">
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+
+<script>
+  const chatButton = document.getElementById('chat-button');
+  const chatWindow = document.getElementById('chat-window');
+  const sendBtn = document.getElementById('send-btn');
+  const userInput = document.getElementById('user-input');
+  const chatMessages = document.getElementById('chat-messages');
+
+  chatButton.addEventListener('click', () => {
+    chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  function appendMessage(text, type) {
+    const container = document.createElement('div');
+    container.className = 'message-container';
+
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${type}-msg`;
+    msgDiv.textContent = text;
+
+    const avatar = document.createElement('img');
+    avatar.className = 'avatar';
+    avatar.src = type === 'user' 
+      ? 'https://i.pravatar.cc/32?img=12'  // random user avatar
+      : 'https://i.pravatar.cc/32?img=32'; // bot avatar
+
+    if (type === 'user') {
+      container.appendChild(msgDiv);
+      container.appendChild(avatar);
+      container.style.justifyContent = 'flex-end';
+    } else {
+      container.appendChild(avatar);
+      container.appendChild(msgDiv);
+      container.style.justifyContent = 'flex-start';
+    }
+
+    chatMessages.appendChild(container);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function botResponse(text) {
+    setTimeout(() => {
+      appendMessage("🤖 Bot: " + text, 'bot');
+    }, 500);
+  }
+
+  sendBtn.addEventListener('click', () => {
+    const text = userInput.value.trim();
+    if (!text) return;
+    appendMessage(text, 'user');
+    userInput.value = '';
+    botResponse("You said: " + text);
+  });
+
+  userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendBtn.click();
+  });
+</script>
+
+</body>
+</html>
