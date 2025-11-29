@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watson-XD Bot</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; background: #111; color: #fff; }
+
+  /* Floating chat button */
+  #chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+  }
+  #chat-button:hover { transform: scale(1.1); }
+
+  /* Chat window */
+  #chat-window {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 340px;
+    max-height: 500px;
+    background: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #chat-header {
+    background: linear-gradient(90deg, #00ffff, #ff00ff);
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    font-family: monospace;
+  }
+
+  #chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scroll-behavior: smooth;
+  }
+
+  .message-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .message {
+    padding: 10px 14px;
+    border-radius: 20px;
+    max-width: 75%;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s;
+  }
+
+  .user-msg {
+    background: #e0e0e0;
+    color: black;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+  }
+
+  .bot-msg {
+    background: #007bff;
+    color: white;
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  #chat-input {
+    display: flex;
+    border-top: 1px solid #555;
+  }
+
+  #chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: #333;
+    color: white;
+  }
+
+  #chat-input button {
+    padding: 10px 15px;
+    background: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  #chat-input button:hover { background: #0056b3; }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  /* Animated console banner */
+  #banner {
+    font-family: monospace;
+    white-space: pre;
+    text-align: center;
+    margin: 20px 0;
+    color: cyan;
+    background: linear-gradient(to right, red, magenta);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: bannerGlow 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes bannerGlow {
+    from { filter: drop-shadow(0 0 2px #fff); }
+    to { filter: drop-shadow(0 0 10px #ff0); }
+  }
+</style>
+</head>
+<body>
+
+<div id="banner">
+███████╗ █████╗ ████████╗███████╗███╗   ██╗██╗    ██╗██╗  ██╗
+██╔════╝██╔══██╗╚══██╔══╝██╔════╝████╗  ██║██║    ██║╚██╗██╔╝
+█████╗  ███████║   ██║   █████╗  ██╔██╗ ██║██║ █╗ ██║ ╚███╔╝ 
+██╔══╝  ██╔══██║   ██║   ██╔══╝  ██║╚██╗██║██║███╗██║ ██╔██╗ 
+███████╗██║  ██║   ██║   ███████╗██║ ╚████║╚███╔███╔╝██╔╝ ██╗
+╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝
+</div>
+
+<button id="chat-button">💬</button>
+
+<div id="chat-window">
+  <div id="chat-header">Watson-XD Bot</div>
+  <div id="chat-messages"></div>
+  <div id="chat-input">
+    <input type="text" id="user-input" placeholder="Type a command...">
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+
+<script>
+const chatButton = document.getElementById('chat-button');
+const chatWindow = document.getElementById('chat-window');
+const sendBtn = document.getElementById('send-btn');
+const userInput = document.getElementById('user-input');
+const chatMessages = document.getElementById('chat-messages');
+
+chatButton.addEventListener('click', () => {
+  chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+});
+
+function appendMessage(text, type) {
+  const container = document.createElement('div');
+  container.className = 'message-container';
+
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `message ${type}-msg`;
+  msgDiv.textContent = text;
+
+  const avatar = document.createElement('img');
+  avatar.className = 'avatar';
+  avatar.src = type === 'user' 
+    ? 'https://i.pravatar.cc/32?img=12'
+    : 'https://i.pravatar.cc/32?img=32';
+
+  if (type === 'user') {
+    container.appendChild(msgDiv);
+    container.appendChild(avatar);
+    container.style.justifyContent = 'flex-end';
+  } else {
+    container.appendChild(avatar);
+    container.appendChild(msgDiv);
+    container.style.justifyContent = 'flex-start';
+  }
+
+  chatMessages.appendChild(container);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Watson-XD Bot logic
+function botResponse(message) {
+  const msg = message.toLowerCase().trim();
+  let reply = `🤖 Watson-XD received: "${message}"`;
+
+  switch (true) {
+    case msg.includes("hello"):
+      reply = "Hello! I'm Watson-XD 🤖";
+      break;
+    case msg.includes("time"):
+      reply = `⏰ Current time: ${new Date().toLocaleTimeString()}`;
+      break;
+    case msg.includes("date"):
+      reply = `📅 Today's date: ${new Date().toLocaleDateString()}`;
+      break;
+    case msg.includes("help"):
+      reply = "Available commands: hello, time, date, status, help";
+      break;
+    case msg.includes("status"):
+      reply = "📊 Watson-XD Status: Online | Version: 1.0.0 | Memory: Browser";
+      break;
+  }
+
+  setTimeout(() => appendMessage(reply, 'bot'), 500);
+}
+
+sendBtn.addEventListener('click', () => {
+  const text = userInput.value.trim();
+  if (!text) return;
+  appendMessage(text, 'user');
+  userInput.value = '';
+  botResponse(text);
+});
+
+userInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendBtn.click();
+});
+</script>
+
+</body>
+</html>
