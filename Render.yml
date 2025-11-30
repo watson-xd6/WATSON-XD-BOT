@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: watson-xd-bot
+    env: node
+    plan: free
+    buildCommand: "npm i"
+    startCommand: "node index.js"
