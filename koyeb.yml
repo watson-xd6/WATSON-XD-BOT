@@ -1,0 +1,10 @@
+apps:
+  - name: watson-xd-bot
+    services:
+      - name: web
+        env: node
+        build:
+          commands:
+            - npm i
+        run:
+          command: node index.js
