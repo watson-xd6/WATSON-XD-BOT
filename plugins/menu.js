@@ -10,35 +10,38 @@ import { platform as getPlatform } from 'os'
 
 const defaultMenu = {
   before: `
-● *Nama:*  %name 
-● *Nomor:* %tag
-● *Premium:* %prems
-● *Limit:* %limit
-● *Role:* %role
-
-*${ucapan()} %name!*
-● *Tanggal:* %week %weton
-● *Date:* %date
-● *Tanggal Islam:* %dateIslamic
-● *Waktu:* %time
-
-● *Nama Bot:* %me
-● *Mode:* %mode
-● *Prefix:* [ *%_p* ]
-● *Platform:* %platform
-● *Type:* Node.JS
-● *Uptime:* %muptime
-● *Database:* %rtotalreg dari %totalreg
+╔═════════════════════
+║ • *Nama:* %name
+║ • *Nomor:* %tag
+║ • *Premium:* %prems
+║ • *Limit:* %limit
+║ • *Role:* %role
+╠═════════════════════
+║ ${ucapan()} %name!
+║ • *Tanggal:* %week %weton
+║ • *Date:* %date
+║ • *Tanggal Islam:* %dateIslamic
+║ • *Waktu:* %time
+╠═════════════════════
+║ • *Nama Bot:* %me
+║ • *Mode:* %mode
+║ • *Prefix:* [ *%_p* ]
+║ • *Platform:* %platform
+║ • *Type:* Node.JS
+║ • *Uptime:* %muptime
+║ • *Database:* %rtotalreg dari %totalreg
+╚═════════════════════
 
 ⬣───「 *INFO CMD* 」───⬣
 │ *Ⓟ* = Premium
 │ *Ⓛ* = Limit
-▣────────────⬣
-  `.trimStart(),
-  header: '╭─────『 %category 』',
-  body: '  ⫸ %cmd %isPremium %islimit',
-  footer: '╰–––––––––––––––༓',
-  after: ``,
+▣────────────────────⬣
+`.trimStart(),
+
+  header: '╭───「 %category 」───',
+  body: '│ ⫸ %cmd %isPremium %islimit',
+  footer: '╰─────────────────',
+  after: `\nPowered by https://wa.me/%owner`
 }
 
 let handler = async (m, { conn, usedPrefix: _p, __dirname, args, command }) => {
