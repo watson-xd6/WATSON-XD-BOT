@@ -22,6 +22,12 @@
 </a>
 </p>
 
+<p align="center">
+<a href="https://github.com/watson-xd6/WATSON-XD-BOT/archive/refs/heads/main.zip" target="_blank">
+<img src="https://img.shields.io/badge/Download%20Latest%20Bot-ZIP-blue?style=for-the-badge&logo=github&logoColor=white" alt="Download Latest Bot ZIP">
+</a>
+</p>
+
 ---
 
 # 🚀 Overview
@@ -69,6 +75,14 @@ A powerful, fast, multi-device WhatsApp bot built for developers, with plugins, 
 - Edit all Owner Information in `config.example.js`.
 - Rename `config.example.js` to `config.js` and configure your environment.
 - **To get your session ID / creds.json**, click the button above.
+
+---
+
+## 📦 Download Latest Bot ZIP  
+
+You can always get the **latest version** of WATSON-XD-BOT as a ZIP file here:  
+
+[**Download Latest Bot ZIP**](https://github.com/watson-xd6/WATSON-XD-BOT/archive/refs/heads/main.zip)  
 
 ---
 
