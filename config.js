@@ -77,6 +77,13 @@ global.error = '*❌ Oops! Something went wrong!*'
 global.rwait = '🔜'
 global.dmoji = '⚡'
 
+/*============= BOT FEATURES =============*/
+
+global.autotyping = false 
+
+global.autorecording = true
+
+/*============= API =============*/
 /*============= API CONFIG =============*/
 global.APIs = {
     ryzumi: 'https://api.ryzumi.vip',
